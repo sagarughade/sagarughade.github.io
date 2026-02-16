@@ -282,6 +282,14 @@
             line-height: 1.8;
         }
 
+        /* Force hero content to be visible - override AOS */
+        .hero-content,
+        .hero-content > * {
+            opacity: 1 !important;
+            transform: none !important;
+            visibility: visible !important;
+        }
+
         .btn-primary-custom {
             background: var(--accent-gradient);
             border: none;
@@ -1555,3 +1563,4 @@
             }, 5000);
         });
            
+
