@@ -1607,54 +1607,65 @@
     });
 
     // Contact Form - EmailJS
-    const contactForm = document.getElementById('contactForm');
-    const formAlert = document.getElementById('formAlert');
-
-    // ✅ EmailJS init
     (function () {
-        emailjs.init("service_9k84r8q"); // yaha apna Public Key daal
+        emailjs.init("leUEdqSysgfjmVKAX"); // 🔥 yaha apna Public Key daal
     })();
 
-    contactForm.addEventListener('submit', function (e) {
+    // Contact Form
+    document.getElementById('contactForm')
+    .addEventListener('submit', function (e) {
         e.preventDefault();
 
-        const submitBtn = contactForm.querySelector('button[type="submit"]');
-        const originalText = submitBtn.innerHTML;
+        const name    = document.getElementById('sender-name').value.trim();
+        const email   = document.getElementById('sender-email').value.trim();
+        const subject = document.getElementById('sender-subject').value.trim() || 'General Inquiry';
+        const message = document.getElementById('sender-message').value.trim();
+        const msg     = document.getElementById('form-msg');
+        const btn     = this.querySelector('button[type="submit"]');
 
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-        submitBtn.disabled = true;
+        // ✅ Validation
+        if (!name || !email || !message) {
+            msg.style.display = 'block';
+            msg.style.color = '#ff6b6b';
+            msg.innerHTML = '❌ Please fill in all required fields.';
+            return;
+        }
 
-        const formData = {
-            name: contactForm.name.value,
-            email: contactForm.email.value,
-            subject: contactForm.subject.value,
-            message: contactForm.message.value
+        // ✅ Button loading
+        btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Sending...';
+        btn.disabled = true;
+
+        const templateParams = {
+            name: name,
+            email: email,
+            subject: subject,
+            message: message
         };
 
-        // ✅ Mail to YOU
-        emailjs.send("service_9k84r8q", "template_xdzbgpj", formData)
+        // ✅ SEND MAIL TO YOU
+        emailjs.send("service_9k84r8q", "template_xdzbgpj", templateParams)
         .then(function () {
 
-            // ✅ Auto reply USER ko
-            emailjs.send("service_9k84r8q", "template_o79y21w", formData);
+            // 🔥 AUTO REPLY USER KO
+            emailjs.send("service_9k84r8q", "template_o79y21w", templateParams);
 
-            formAlert.className = 'form-alert success';
-            formAlert.textContent = 'Thank you! Your message has been sent successfully.';
-            formAlert.style.display = 'block';
+            msg.style.display = 'block';
+            msg.style.color = 'green';
+            msg.innerHTML = "✅ Message sent! I'll get back to you soon.";
 
-            contactForm.reset();
+            document.getElementById('contactForm').reset();
         })
-        .catch(function (error) {
-            formAlert.className = 'form-alert error';
-            formAlert.textContent = 'Oops! Something went wrong. Please email me directly at sagarughade94@gmail.com';
-            formAlert.style.display = 'block';
+        .catch(function () {
+            msg.style.display = 'block';
+            msg.style.color = '#ff6b6b';
+            msg.innerHTML = '❌ Something went wrong. Please try again.';
         })
         .finally(function () {
-            submitBtn.innerHTML = originalText;
-            submitBtn.disabled = false;
+            btn.innerHTML = '<i class="bi bi-send-fill"></i> Send Message';
+            btn.disabled = false;
 
-            setTimeout(function () {
-                formAlert.style.display = 'none';
+            setTimeout(() => {
+                msg.style.display = 'none';
             }, 5000);
         });
     });
