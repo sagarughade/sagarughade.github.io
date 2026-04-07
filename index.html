@@ -1608,7 +1608,7 @@
 
     // Contact Form - EmailJS
     (function () {
-        emailjs.init("leUEdqSysgfjmVKAX"); // 🔥 yaha apna Public Key daal
+        emailjs.init("leUEdqSysgfjmVKAX"); // 🔥 tera Public Key
     })();
 
     // Contact Form
@@ -1616,12 +1616,13 @@
     .addEventListener('submit', function (e) {
         e.preventDefault();
 
-        const name    = document.getElementById('sender-name').value.trim();
-        const email   = document.getElementById('sender-email').value.trim();
-        const subject = document.getElementById('sender-subject').value.trim() || 'General Inquiry';
-        const message = document.getElementById('sender-message').value.trim();
-        const msg     = document.getElementById('form-msg');
-        const btn     = this.querySelector('button[type="submit"]');
+        const name    = document.getElementById('name').value.trim();
+        const email   = document.getElementById('email').value.trim();
+        const subject = document.getElementById('subject').value.trim() || 'General Inquiry';
+        const message = document.getElementById('message').value.trim();
+
+        const msg = document.getElementById('formAlert');
+        const btn = this.querySelector('button[type="submit"]');
 
         // ✅ Validation
         if (!name || !email || !message) {
@@ -1632,7 +1633,7 @@
         }
 
         // ✅ Button loading
-        btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Sending...';
+        btn.innerHTML = 'Sending...';
         btn.disabled = true;
 
         const templateParams = {
@@ -1642,26 +1643,26 @@
             message: message
         };
 
-        // ✅ SEND MAIL TO YOU
+        // ✅ SEND MAIL
         emailjs.send("service_9k84r8q", "template_xdzbgpj", templateParams)
         .then(function () {
 
-            // 🔥 AUTO REPLY USER KO
+            // 🔥 AUTO REPLY
             emailjs.send("service_9k84r8q", "template_o79y21w", templateParams);
 
             msg.style.display = 'block';
             msg.style.color = 'green';
-            msg.innerHTML = "✅ Message sent! I'll get back to you soon.";
+            msg.innerHTML = "✅ Message sent successfully!";
 
             document.getElementById('contactForm').reset();
         })
         .catch(function () {
             msg.style.display = 'block';
             msg.style.color = '#ff6b6b';
-            msg.innerHTML = '❌ Something went wrong. Please try again.';
+            msg.innerHTML = '❌ Something went wrong. Try again.';
         })
         .finally(function () {
-            btn.innerHTML = '<i class="bi bi-send-fill"></i> Send Message';
+            btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
             btn.disabled = false;
 
             setTimeout(() => {
